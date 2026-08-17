@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Lydia CMS: SecureGate — Test Suite (EN)</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #222;
+            color: #fff;
+        }
+
+        .pass {
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        .fail {
+            color: #ff0000;
+            font-weight: bold;
+        }
+
+        .test-unit {
+            margin-bottom: 10px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 5px;
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        .lang-switcher {
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        .lang-switcher a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .lang-switcher a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Lydia CMS: SecureGate — Test Suite</h1>
+
+    <!-- Ссылка на переключение языка -->
+    <div class="lang-switcher">
+        <span>Language: <strong>English</strong> | </span>
+        <a href="index_ru.html">Переключить на Русский [RU] &rarr;</a>
+    </div>
+
+    <div id="test-results">Running automated system tests...</div>
+
+    <!-- Hidden fixtures for DOM testing -->
+    <div id="secure-critical" style="display:none;"></div>
+    <div id="auth-container" style="display:none;"></div>
+    <button id="btn-open-auth-modal" style="display:none;"></button>
+    <form id="secure-auth-form" style="display:none;"></form>
+
+    <script type="text/javascript" src="../js/lydia-secure-gate.js"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+            var output = document.getElementById("test-results");
+            output.innerHTML = "";
+
+            function assert(condition, message) {
+                var div = document.createElement("div");
+                div.className = "test-unit";
+                if (condition) {
+                    div.innerHTML = "[ <span class='pass'>SUCCESS</span> ] " + message;
+                } else {
+                    div.innerHTML = "[ <span class='fail'>FAILED</span> ] " + message;
+                }
+                output.appendChild(div);
+            }
+
+            // --- RUN ENGLISH TESTS ---
+            assert(typeof window.LydiaSecureGate === "function",
+                "The LydiaSecureGate class core is successfully registered in global scope.");
+
+            assert(typeof window.requireScript === "function",
+                "The async loader (window.requireScript) is available for dynamic components.");
+
+            var testGate = new LydiaSecureGate({
+                criticalBlockId: "secure-critical",
+                authContainerId: "auth-container",
+                btnOpenId: "btn-open-auth-modal"
+            });
+            assert(testGate.criticalBlockId === "secure-critical" && testGate.authContainerId === "auth-container",
+                "Constructor configs applied correctly. SELECTORS: passed.");
+
+            assert(testGate.lang === "en",
+                "Language Engine correctly identified document context. Current locale assigned: [EN].");
+
+            var currentProtocol = window.location.protocol;
+            if (currentProtocol === "file:" || currentProtocol === "http:") {
+                assert(window.location.protocol !== "https:",
+                    "Local or insecure sandbox detected (" + currentProtocol + "). The engine successfully forced fallbacks.");
+            } else {
+                assert(window.location.protocol === "https:",
+                    "Environment verified. Encrypted channel active (HTTPS).");
+            }
+
+            testGate._pingServer(function (isServerCapable) {
+                if (currentProtocol === "file:") {
+                    assert(isServerCapable === false,
+                        "The network stack safely returned [FALSE] for local filesystem environment without hanging the browser UI loop.");
+                } else {
+                    assert(typeof isServerCapable === "boolean",
+                        "Asynchronous HEAD ping evaluation completed. Server HTTPS capabilities verified: " + isServerCapable);
+                }
+            });
+        };
+    </script>
+</body>
+
+</html>

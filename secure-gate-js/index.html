@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Lydia CMS: SecureGate — Demo & Documentation</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline';">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Lydia CMS: SecureGate Demonstration</h1>
+        <p>Click the button below to initiate the background connection check.</p>
+        <p><a href="index_ru.html">Перейти на русскую версию (index_ru.html)</a></p>
+
+        <div style="margin: 20px 0;">
+            <button id="btn-open-auth-modal" type="button">Log In to Dashboard</button>
+        </div>
+
+        <!-- Localized English Error Block -->
+        <div id="secure-critical" class="error-box" style="display: none;">
+            <strong>Warning!</strong><br>
+            Transmission of confidential information in plain text via http protocol is prohibited!
+            Access blocked for your data protection.
+        </div>
+
+        <div id="auth-container" style="display: none; border-top: 1px solid #eee; padding-top: 20px;">
+            <form id="secure-auth-form" action="#" method="POST">
+                <label>Username:</label>
+                <input type="text" name="user" required>
+
+                <label>Password:</label>
+                <input type="password" id="auth-pass" name="pass" required>
+
+                <button type="submit">Confirm Login</button>
+            </form>
+        </div>
+    </div>
+
+    <div style="margin-top: 20px; text-align: center; font-size: 12px; color: #777;">
+        &copy; 2026 Developed for Lydia CMS. Loaded after the footer.
+    </div>
+
+    <script type="text/javascript" src="js/lydia-secure-gate.js"></script>
+</body>
+
+</html>
