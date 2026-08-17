@@ -55,6 +55,21 @@ A built-in test suite is included in the repository. To manually test the enviro
 ```text
 tests/index.html
 ```
+## 📂 Repository File Structure & Descriptions
+
+*   **`css/`** — Contains frontend visual layouts.
+    *   `style.css` — Base styles ensuring proper hiding/showing of modal dialogs and hard-block screens.
+*   **`js/`** — Core security engine and lazy-loaded targets.
+    *   `secure-gate.js` — Main client-side enforcer script. Handles protocol validation, HEAD pinging, and storage wipes.
+    *   `auth.js` — Mock authorization module. Downloaded asynchronously only after a secure channel is confirmed.
+    *   `billing.js` — Mock payment gate module showcasing lazy loading integration.
+*   **`tests/`** — Automated validation sandbox.
+    *   `index.html` — Base English automated test runner verifying object initialization and non-freezing file:// architecture.
+    *   `index_ru.html` — Localized Russian automated test runner with cross-links to verify Cyrillic language engine.
+*   **`index.html`** — Core English presentation window and module handbook.
+*   **`index_ru.html`** — Localized Russian presentation window and quick-test entry point.
+*   **`.gitignore`** — Restricts OS metadata, editor configurations, and debug logs from cluttering the repository.
+*   **`LICENSE`** — Legal parameters of the open-source MIT License.
 
 ## 📄 License
 
